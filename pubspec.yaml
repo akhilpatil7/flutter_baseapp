@@ -5,6 +5,7 @@ dependencies:
   font_awesome_flutter: 6.0.0
   flutter:
     sdk: flutter
+  firebase_auth: any
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -43,9 +44,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
-  #   - family: Schyler
+  #   - family: 'Kaushan Script', cursive;
   #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/kaushanscript.Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

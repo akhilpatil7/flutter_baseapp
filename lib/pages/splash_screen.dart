@@ -14,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(Duration(seconds: 5), () => MyNavigator.goToIntro(context));
+    Timer(Duration(seconds: 3), () => MyNavigator.goToIntro(context));
   }
 
   @override
@@ -24,7 +24,9 @@ class _SplashScreenState extends State<SplashScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           Container(
-            decoration: BoxDecoration(color: Colors.redAccent),
+            decoration: BoxDecoration(
+                color: const Color.fromRGBO(227, 170, 9, 1.0),
+            ),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -39,8 +41,8 @@ class _SplashScreenState extends State<SplashScreen> {
                         backgroundColor: Colors.white,
                         radius: 50.0,
                         child: Icon(
-                          Icons.shopping_cart,
-                          color: Colors.greenAccent,
+                          Icons.restaurant,
+                          color: const Color.fromRGBO(147, 109, 2, 1.0),
                           size: 50.0,
                         ),
                       ),
@@ -48,11 +50,13 @@ class _SplashScreenState extends State<SplashScreen> {
                         padding: EdgeInsets.only(top: 10.0),
                       ),
                       Text(
-                        Flutkart.name,
+                        "CHEF-A-CHARMINAR",
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 24.0),
+                            fontSize: 24.0,
+                            fontFamily: "Kaushan Script",
+                        ),
                       )
                     ],
                   ),
@@ -68,7 +72,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       padding: EdgeInsets.only(top: 20.0),
                     ),
                     Text(
-                      Flutkart.store,
+                      "Come and discover our tasty menu",
                       softWrap: true,
                       textAlign: TextAlign.center,
                       style: TextStyle(

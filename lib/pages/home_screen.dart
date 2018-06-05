@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutkart/utils/flutkart.dart';
 import 'package:flutkart/Fragments/First_Fragment.dart';
+import 'package:flutkart/Fragments/Second_Fragment.dart';
+import 'package:flutkart/Fragments/Third_Fragment.dart';
 
-
-class page extends StatelessWidget {
+class DrawerItem {
   String title;
-  page(this.title);
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-      child: new Center(
-        child:  new Text(title),
-      ),
-    );
-  }
+  IconData icon;
+  DrawerItem(this.title, this.icon);
 }
 
 class HomeScreen extends StatefulWidget {
-
+  final drawerItems = [
+    new DrawerItem("Fragment 1", Icons.rss_feed),
+    new DrawerItem("Fragment 2", Icons.local_pizza),
+    new DrawerItem("Fragment 3", Icons.info)
+  ];
 
   @override
   _HomeScreenState createState() => new _HomeScreenState();
@@ -25,92 +22,63 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
-  TabController tabController;
-//here in the initstate we assign the tabcontroller and give it a length and vsyc for animation.
-  @override
-  void initState(){
-    super.initState();
-    tabController = new TabController(length: 3,vsync: this);
+  int _selectedDrawerIndex = 0;
+
+  _getDrawerItemWidget(int pos) {
+    switch (pos) {
+      case 0:
+        return new FirstFragment();
+      case 1:
+        return new SecondFragment();
+      case 2:
+        return new ThirdFragment();
+
+      default:
+        return new Text("Error");
+    }
   }
-//dispose method for good practice.
-  @override
-  void dispose(){
-    super.dispose();
-    tabController.dispose();
+
+  _onSelectItem(int index) {
+    setState(() => _selectedDrawerIndex = index);
+    Navigator.of(context).pop(); // close the drawer
   }
+
 //our build widget of state class.
   @override
   Widget build(BuildContext context) {
 
+    var drawerOptions = <Widget>[];
+    for (var i = 0; i < widget.drawerItems.length; i++) {
+      var d = widget.drawerItems[i];
+      drawerOptions.add(
+          new ListTile(
+            leading: new Icon(d.icon),
+            title: new Text(d.title),
+            selected: i == _selectedDrawerIndex,
+            onTap: () => _onSelectItem(i),
+          )
+      );
+    }
 
-    return new Scaffold(appBar:  new AppBar(
-        backgroundColor: Colors.redAccent,
-        title: new Center(child: new Container(
-          child: Text('Home'),
-
-        )) ),
-        drawer: new Drawer(
-          // Add a ListView to the drawer. This ensures the user can scroll
-          // through the options in the Drawer if there isn't enough vertical
-          // space to fit everything.
-          child: new ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              new UserAccountsDrawerHeader(
-                  accountName: new Text("Akhil Patil"),
-                  accountEmail: new Text("akhil.patil7@gmail.com")),
-              new ListTile(
-                title: new Text('Item 1'),
-                onTap: () {
-                  // Update the state of the app
-                  FirstFragment();
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-              new ListTile(
-                title: new Text('Item 2'),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-        ),
-//here we define our TabBarView.
-        body: new TabBarView(
+    return new Scaffold(
+      appBar: new AppBar(
+        // here we display the title corresponding to the fragment
+        // you can instead choose to have a static title
+        title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
+        backgroundColor: const Color.fromRGBO(227, 170, 9, 1.0),
+      ),
+      drawer: new Drawer(
+        child: new Column(
           children: <Widget>[
-            new page("hey bottomNavigation"),new page('the other one!'),new page('headset is on?')
+            new UserAccountsDrawerHeader(
+                accountName: new Text("John Doe"), accountEmail: null),
+            new Column(children: drawerOptions)
           ],
-          controller: tabController,
         ),
-//now we can just create a bottomnavigationBar under our scaffold
-        bottomNavigationBar:new Material(
-          color: Colors.redAccent,
-          child: new TabBar(
-            controller: tabController,
-            tabs: <Widget>[
-              new Tab(
-                icon: new Icon(Icons.home),
-                text: "Home",
-              ),
-              new Tab(
-                icon: new Icon(Icons.sentiment_satisfied),
-                text: "Services",
-
-              ),
-              new Tab(
-                icon: new Icon(Icons.people),
-                text: "About Us",
-              ),
-            ],
-          ),
-        )
-    );//scaffold
+      ),
+      body: _getDrawerItemWidget(_selectedDrawerIndex),
+    );
+    //scaffold
   }
 }
 
